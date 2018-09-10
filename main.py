@@ -1,6 +1,5 @@
 from sklearn.externals import joblib
 from flask import Flask, jsonify, request
-import requests
 import pandas as pd
 from sklearn import datasets
 from flask_httpauth import HTTPBasicAuth
