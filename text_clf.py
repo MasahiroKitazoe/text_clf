@@ -1,4 +1,3 @@
-from sklearn import datasets
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LogisticRegression
 import pandas as pd
@@ -8,6 +7,7 @@ import MeCab
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.model_selection import cross_val_score
 from sklearn.model_selection import GridSearchCV
+from sklearn.externals import joblib
 
 
 class WordDividor:
@@ -64,6 +64,8 @@ if __name__ == '__main__':
 
   X_train, X_test, y_train, y_test = train_test_split(text_data, text_target, test_size=0.20, random_state=0)
 
+  X_train.to_csv('./datasets/x_train.csv', mode="w")
+
   wd = WordDividor()
   cv = CountVectorizer(min_df=2, analyzer=wd.extract_words)
 
@@ -78,6 +80,8 @@ if __name__ == '__main__':
 
   X_test = vect.transform(X_test)
   print(grid.score(X_test, y_test))
+
+  joblib.dump(grid, 'text_logreg.pkl')
 
   sample = ['無所属・小川淳也氏、立憲会派入り表明', '大坂なおみの優勝にブーイング　２０歳の新女王が涙の謝罪「こんな終わり方ですみません」']
   sample = vect.transform(sample)
