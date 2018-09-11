@@ -5,6 +5,7 @@ from sklearn import datasets
 from flask_httpauth import HTTPBasicAuth
 from text_clf import WordDividor
 from sklearn.feature_extraction.text import CountVectorizer
+import MeCab
 
 app = Flask(__name__)
 auth = HTTPBasicAuth()
