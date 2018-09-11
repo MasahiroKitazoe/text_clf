@@ -67,7 +67,7 @@ if __name__ == '__main__':
   X_train.to_csv('./datasets/x_train.csv', mode="w")
 
   wd = WordDividor()
-  cv = CountVectorizer(min_df=2, analyzer=wd.extract_words)
+  cv = CountVectorizer(min_df=3, analyzer=wd.extract_words)
 
   vect = cv.fit(X_train)
   X_train = vect.transform(X_train)
