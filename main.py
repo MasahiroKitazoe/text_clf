@@ -19,17 +19,6 @@ def get_pw(username):
         return users.get(username)
     return None
 
-@app.route('/predict/<string:clf_file>', methods=['POST'])
-@auth.login_required
-def predict(clf_file):
-    clf = joblib.load("{}.pkl".format(clf_file))
-    data = request.json
-    query = pd.DataFrame(data)
-    cols = joblib.load("{}_cols.pkl".format(clf_file))
-    query = query[cols]
-    prediction = clf.predict(query)
-    return jsonify({'prediction':prediction.tolist()})
-
 @app.route('/classify/<string:clf_file>', methods=['POST'])
 @auth.login_required
 def predict(clf_file):
