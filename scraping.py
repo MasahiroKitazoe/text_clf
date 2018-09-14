@@ -55,11 +55,6 @@ for url in urls:
     i += 1
     indexes.append(i)
 
-  print(len(titles))
-  print(len(sources))
-  print(len(indexes))
-  print(len(themes))
-
   df = pd.DataFrame({'index': indexes,
                      'title': titles,
                      'source': sources,
