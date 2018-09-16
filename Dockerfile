@@ -28,4 +28,4 @@ COPY . /opt/api
 WORKDIR /opt/api
 RUN pip3 install -r requirements.txt
 
-CMD ["python3", "main.py"]
+CMD gunicorn --bind 0.0.0.0:$PORT wsgi
