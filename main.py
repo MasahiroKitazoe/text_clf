@@ -21,17 +21,23 @@ def get_pw(username):
 @app.route('/classify/<string:clf_file>', methods=['POST'])
 @auth.login_required
 def predict(clf_file):
-    X_train = pd.read_csv('./datasets/x_train.csv')
+    X_train = pd.read_csv('./datasets/x_train.csv', header=None)
+    X_train = X_train.iloc[:, 1]
     wd = WordDividor()
-    cv = CountVectorizer(min_df=2, analyzer=wd.extract_words)
+    cv = CountVectorizer(analyzer=wd.extract_words)
     vect = cv.fit(X_train)
+    X_train = vect.transform(X_train)
 
     clf = joblib.load("{}.pkl".format(clf_file))
     data = request.json
+    data = pd.Series([data['text']])
     bow = vect.transform(data)
     prediction = clf.predict(bow)
     return jsonify({'prediction':prediction.tolist()})
 
+@app.route('/', methods=['GET'])
+def hello():
+    return 'hello world'
 
 if __name__ == '__main__':
     app.debug = True

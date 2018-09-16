@@ -1,3 +1,4 @@
+# coding:utf-8
 import urllib.request, urllib.error
 from bs4 import BeautifulSoup
 import pandas as pd

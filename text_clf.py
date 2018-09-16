@@ -64,10 +64,11 @@ if __name__ == '__main__':
 
   X_train, X_test, y_train, y_test = train_test_split(text_data, text_target, test_size=0.20, random_state=0)
 
-  X_train.to_csv('./datasets/x_train.csv', mode="w")
+  X_save = X_train.reset_index(drop=True)
+  X_save.to_csv('./datasets/x_train.csv', mode="w")
 
   wd = WordDividor()
-  cv = CountVectorizer(min_df=1, analyzer=wd.extract_words)
+  cv = CountVectorizer(analyzer=wd.extract_words)
 
   vect = cv.fit(X_train)
   X_train = vect.transform(X_train)
