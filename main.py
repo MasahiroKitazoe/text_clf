@@ -19,7 +19,6 @@ def get_pw(username):
     return None
 
 @app.route('/classify/<string:clf_file>', methods=['POST'])
-@auth.login_required
 def predict(clf_file):
     X_train = pd.read_csv('./datasets/x_train.csv', header=None)
     X_train = X_train.iloc[:, 1]
@@ -33,11 +32,11 @@ def predict(clf_file):
     data = pd.Series([data['text']])
     bow = vect.transform(data)
     prediction = clf.predict(bow)
-    return jsonify({'prediction':prediction.tolist()})
+    return str(prediction)
 
 @app.route('/', methods=['GET'])
 def hello():
-    return 'hello world'
+    return 'Hello World!! I Love You!!'
 
 if __name__ == '__main__':
     app.debug = True

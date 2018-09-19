@@ -8,12 +8,14 @@ from sklearn.model_selection import cross_val_score
 from sklearn.model_selection import GridSearchCV
 from sklearn.externals import joblib
 import MeCab
+import os
+import urllib.request
 
 
 class WordDividor:
     INDEX_CATEGORY = 0
     INDEX_ROOT_FORM = 6
-    TARGET_CATEGORIES = ["名詞", " 動詞",  "形容詞", "副詞", "連体詞", "感動詞"]
+    TARGET_CATEGORIES = ["名詞", " 動詞",  "形容詞"]
 
     def __init__(self, dictionary="mecabrc"):
         self.dictionary = dictionary
@@ -39,6 +41,23 @@ class WordDividor:
             node = node.next
 
         return words
+
+def download_stopwords(path):
+    url = 'http://svn.sourceforge.jp/svnroot/slothlib/CSharp/Version1/SlothLib/NLP/Filter/StopWord/word/Japanese.txt'
+    if os.path.exists(path):
+        print('File already exists.')
+    else:
+        print('Downloading...')
+        # Download the file from `url` and save it locally under `file_name`:
+        urllib.request.urlretrieve(url, path)
+
+def create_stopwords(file_path):
+    stop_words = []
+    for w in open(path, "r"):
+        w = w.replace('\n','')
+        if len(w) > 0:
+          stop_words.append(w)
+    return stop_words
 
 if __name__ == '__main__':
 
@@ -67,8 +86,12 @@ if __name__ == '__main__':
   X_save = X_train.reset_index(drop=True)
   X_save.to_csv('./datasets/x_train.csv', mode="w")
 
+  path = "./datasets/stop_words.txt"
+  download_stopwords(path)
+  stop_words = create_stopwords(path)
+
   wd = WordDividor()
-  cv = CountVectorizer(analyzer=wd.extract_words)
+  cv = CountVectorizer(analyzer=wd.extract_words, stop_words=stop_words)
 
   vect = cv.fit(X_train)
   X_train = vect.transform(X_train)
